@@ -20,6 +20,7 @@ module.exports = {
     "react/function-component-definition": ["warn", { "namedComponents": "arrow-function" }],
     "react/destructuring-assignment": "off",
     "react/prefer-stateless-function": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "linebreak-style": 0
   }
 }
