@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
-    "start": "next start",
+    "start": "next start -p 3100",
     "lint:eslint": "next lint",
     "lint:stylelint": "stylelint \"src/**/*.{css,scss}\" --ignore-path .gitignore",
     "lint": "npm run lint:eslint && npm run lint:stylelint"
