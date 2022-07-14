@@ -10,3 +10,5 @@ services:
     image: nextjs-app-production
     ports:
       - '3001:3000'
+    environment:
+      - DATABASE_URL=postgresql://testpg:testpg@132.145.183.252:49169/testpg?schema=public
