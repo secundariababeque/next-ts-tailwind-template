@@ -1,9 +1,9 @@
 # This Dockerfile was inspired by https://github.com/vercel/next.js/tree/canary/examples/with-docker
 
 # 1. Install dependencies only when needed
-FROM arm64v8/node:16-alpine AS deps
+FROM arm64v8/node:16 AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# RUN apk add --no-cache libc6-compat
 RUN npm install -g npm@latest
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -14,9 +14,10 @@ RUN npm ci
 # RUN yarn install --frozen-lockfile
 
 # 2. Rebuild the source code only when needed
-FROM arm64v8/node:16-alpine AS builder
+FROM arm64v8/node:16 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/node_modules/.prisma ./node_modules/app/node_modules/.prisma
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -33,7 +34,7 @@ RUN npm run build
 # RUN yarn build
 
 # 3. Production image, copy all the files and run next
-FROM arm64v8/node:16-alpine AS runner
+FROM arm64v8/node:16 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production

@@ -3,8 +3,10 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.scss'
+import { PrismaClient, users } from '@prisma/client'
 
-const Home: NextPage = () => {
+const Home: NextPage<{ userList: Array<users> }> = ({ userList }) => {
+  // console.log('users', userList)
   return (
     <div className={styles.container}>
       <Head>
@@ -30,6 +32,9 @@ const Home: NextPage = () => {
                 <a>Authors</a>
               </Link>
             </li>
+            {
+              userList.map((user) => (<li key={user.id}>{user.firstName}</li>))
+            }
           </ul>
         </div>
 
@@ -88,3 +93,13 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps = async () => {
+  const prisma = await new PrismaClient()
+  const userList = await prisma.users.findMany()
+  return {
+    props: {
+      userList,
+    },
+  }
+}
